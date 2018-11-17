@@ -1,0 +1,2 @@
+mv waypoint_loader.launch waypoint_loader_temp
+cp h.launch waypoint_loader.launch
