@@ -5,7 +5,7 @@ import rospy
 import datetime
 
 CONFIDENCE_CUTOFF = 0.3
-TRAFFIC_LIGHT_LIST = {1:TrafficLight.GREEN, 2:TrafficLight.RED, 3:TrafficLight.YELLOW}
+TRAFFIC_LIGHT_LIST = {1:TrafficLight.GREEN, 2:TrafficLight.RED, 3:TrafficLight.YELLOW, 4:TrafficLight.UNKNOWN}
 
 class TLClassifier(object):
     def __init__(self, model=None):
@@ -33,9 +33,7 @@ class TLClassifier(object):
 
             # The classification of the object (integer id).
             self.detection_classes = self.detection_graph.get_tensor_by_name('detection_classes:0')
-            
-            self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
-            
+                        
         self.sess = tf.Session(graph=self.detection_graph)
         
         
@@ -66,8 +64,8 @@ class TLClassifier(object):
         with self.detection_graph.as_default():
             image_np = np.expand_dims(np.asarray(image, dtype=np.uint8), 0)
             start = datetime.datetime.now()
-            (boxes, scores, classes, num_detections) = self.sess.run([self.detection_boxes, self.detection_scores,                                                                                      self.detection_classes, self.num_detections],
-                                                                     feed_dict={self.image_tensor: image_np})
+            (boxes, scores, classes) = self.sess.run([self.detection_boxes, self.detection_scores,                                                                                      self.detection_classes],
+                                                     feed_dict={self.image_tensor: image_np})
             end = datetime.datetime.now()
             rospy.logwarn("detection time: {0}".format((end-start).total_seconds()))
             # Remove unnecessary dimensions
@@ -79,6 +77,7 @@ class TLClassifier(object):
             boxes, scores, classes = self.filter_boxes(CONFIDENCE_CUTOFF, boxes, scores, classes)
             rospy.logwarn("matches: {0}".format(len(classes)))
             if len(classes) > 0:
+                rospy.logwarn("class: {0} will return {1}".format(classes[0], TRAFFIC_LIGHT_LIST[classes[0]]))
                 return TRAFFIC_LIGHT_LIST[classes[0]]
             else:
                 return TrafficLight.UNKNOWN
