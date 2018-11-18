@@ -4,7 +4,7 @@ import numpy as np
 import rospy
 import datetime
 
-CONFIDENCE_CUTOFF = 0.3
+CONFIDENCE_CUTOFF = 0.15
 TRAFFIC_LIGHT_LIST = {1:TrafficLight.GREEN, 2:TrafficLight.RED, 3:TrafficLight.YELLOW, 4:TrafficLight.UNKNOWN}
 
 class TLClassifier(object):
@@ -75,9 +75,10 @@ class TLClassifier(object):
 
             # Filter boxes with a confidence score less than `confidence_cutoff`
             boxes, scores, classes = self.filter_boxes(CONFIDENCE_CUTOFF, boxes, scores, classes)
-            rospy.logwarn("matches: {0}".format(len(classes)))
             if len(classes) > 0:
-                rospy.logwarn("class: {0} will return {1}".format(classes[0], TRAFFIC_LIGHT_LIST[classes[0]]))
+                rospy.logwarn("matches: {0} with class: {0} will return {1}".format(len(classes), 
+                                                                                    classes[0], 
+                                                                                    TRAFFIC_LIGHT_LIST[classes[0]]))
                 return TRAFFIC_LIGHT_LIST[classes[0]]
             else:
                 return TrafficLight.UNKNOWN
