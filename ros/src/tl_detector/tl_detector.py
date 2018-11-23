@@ -93,7 +93,10 @@ class TLDetector(object):
             used.
             '''
             if self.pose is not None and self.waypoints is not None and self.camera_image is not None:
-                light_wp, state = self.process_traffic_lights()    
+                light_wp, state = self.process_traffic_lights()
+                # reset camera to always use new image
+                self.has_image = False
+                self.camera_image = None
                 if self.state != state:
                     self.state_count = 0
                     self.state = state
