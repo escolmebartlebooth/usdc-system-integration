@@ -26,7 +26,7 @@ class TLDetector(object):
         self.lights = []
         self.model = (rospy.get_param('bbooth_model_path'))
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
-        sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
+        self.waypoints = rospy.wait_for_message('/base_waypoints', Lane).waypoints
 
         '''
         /vehicle/traffic_lights provides you with the location of the traffic light in 3D map space and
@@ -35,7 +35,7 @@ class TLDetector(object):
         simulator. When testing on the vehicle, the color state will not be available. You'll need to
         rely on the position of the light and the camera image to predict it.
         '''
-        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
+        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb, queue_size=1)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
         config_string = rospy.get_param("/traffic_light_config")
@@ -57,8 +57,8 @@ class TLDetector(object):
         # put this last as otherwise other elements don't initialise before call backs
         self.light_classifier = TLClassifier(self.model)
         
-        #rospy.spin()
-        self.loop()
+        rospy.spin()
+        #self.loop()
         
     def pose_cb(self, msg):
         self.pose = msg
