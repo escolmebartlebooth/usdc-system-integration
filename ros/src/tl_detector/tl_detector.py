@@ -57,8 +57,8 @@ class TLDetector(object):
         # put this last as otherwise other elements don't initialise before call backs
         self.light_classifier = TLClassifier(self.model)
         
-        rospy.spin()
-        #self.loop()
+        #rospy.spin()
+        self.loop()
         
     def pose_cb(self, msg):
         self.pose = msg
