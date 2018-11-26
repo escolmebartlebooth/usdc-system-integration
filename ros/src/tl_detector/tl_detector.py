@@ -181,5 +181,5 @@ class TLDetector(object):
 if __name__ == '__main__':
     try:
         TLDetector()
-    except rospy.ROSInterruptException:
+    except rospy.ROSInterruptException: 
         rospy.logerr('Could not start traffic node.')
