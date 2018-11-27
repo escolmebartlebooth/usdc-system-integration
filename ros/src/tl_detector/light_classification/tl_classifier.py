@@ -66,7 +66,7 @@ class TLClassifier(object):
             (boxes, scores, classes) = self.sess.run([self.detection_boxes, self.detection_scores,                                                                                      self.detection_classes],
                                                      feed_dict={self.image_tensor: image_np})
             end = datetime.datetime.now()
-            rospy.logwarn("detection time: {0}".format((end-start).total_seconds()))
+            # rospy.logwarn("detection time: {0}".format((end-start).total_seconds()))
             # Remove unnecessary dimensions
             boxes = np.squeeze(boxes)
             scores = np.squeeze(scores)
@@ -75,7 +75,7 @@ class TLClassifier(object):
             # Filter boxes with a confidence score less than `confidence_cutoff`
             boxes, scores, classes = self.filter_boxes(CONFIDENCE_CUTOFF, boxes, scores, classes)
             if len(classes) > 0:
-                rospy.logwarn("matches {0} and class: {1}".format(len(classes),                                                                                                                       classes[0]))
+                # rospy.logwarn("matches {0} and class: {1}".format(len(classes),                                                                                                                       classes[0]))
                 if classes[0] == 1: 
                     return TrafficLight.GREEN
                 elif classes[0] == 2: 
