@@ -180,7 +180,7 @@ class TLDetector(object):
         
         if light:
             state = self.get_light_state(light)
-            rospy.logwarn("car: {0}; line {1} and state {2} and class {3}".format(car_position, line_wp_idx, light.state, state))
+            #rospy.logwarn("car: {0}; line {1} and state {2} and class {3}".format(car_position, line_wp_idx, light.state, state))
             return line_wp_idx, state
         
         #self.waypoints = None
