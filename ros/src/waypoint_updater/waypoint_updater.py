@@ -43,8 +43,7 @@ class WaypointUpdater(object):
         self.pose = None
         self.base_waypoints = None
         self.waypoints_2d = None
-        self.waypoint_tree = None
-        self.closest_waypoint_idx = None
+        self.waypoint_tree = None        
         self.stopline_wp_idx = -1
         
         #rospy.spin()
@@ -115,7 +114,6 @@ class WaypointUpdater(object):
         rate = rospy.Rate(10) # changed to 10hz after watching walk through / experiment
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
-                self.closest_waypoint_idx = self.get_closest_waypoint_idx()
                 self.publish_waypoints()
             rate.sleep()
     
