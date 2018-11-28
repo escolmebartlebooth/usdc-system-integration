@@ -110,7 +110,7 @@ class WaypointUpdater(object):
     
     
     def loop(self):
-        rate = rospy.Rate(10) # changed to 10hz after watching walk through / experiment
+        rate = rospy.Rate(5) # changed to 10hz after watching walk through / experiment
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
                 self.closest_waypoint_idx = self.get_closest_waypoint_idx()
