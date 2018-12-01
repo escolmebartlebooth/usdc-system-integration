@@ -1,0 +1,40 @@
+go to workspace and enable GPU mode
+navigate to /opt <<< needs to be off workspace as > 2GB file
+mkdir results && cd results
+wget https://udacity-selfdrivingcar.s3.amazonaws.com/reviews/1590898_1543630236.zip
+unzip 1590898_1543630236.zip
+
+This creates:
+	extracting: 1590898.txt
+ 	extracting: 1590898_2018-12-01-00-38-39.bag
+ 	extracting: 1590898.avi
+ 	extracting: 1590898.log
+ 	extracting: 1590898_site.log
+ 	extracting: 1590898.MP4
+
+in 1590898.txt
+Simulator
+    Comments: 
+        Passed
+
+Carla:
+    Comments: 
+        Done
+
+This means we PASSED on the simulator and that the Code was run on Carla
+The avi is of the simulator run <<< not sure how we passed...
+The mp4 is of the test run on the site
+The rosbag can be replayed: https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/3251f513-2f82-4d5d-88b6-9d646bbd9101
+
+Go into Desktop and start terminator
+  Open a terminal and into /home/workspace/ issue: wget https://s3-us-west-1.amazonaws.com/udacity-selfdrivingcar/default.rviz
+  This downloads the rviz config file
+	From same terminal issue command: roscore
+	Open a second terminal and issue command: rosbag play -l /path/to/your.bag
+	Open a third terminal and issue command (or start from apps): rviz
+	Configure rviz for this bag:
+		File > Open Config or change this file: ~/.rviz/default.rvi to have Udacity file as default config
+
+You should see the results...the -l makes the bag loop
+
+Download Video locally to hear reviewer...we need a better classifier for site!
