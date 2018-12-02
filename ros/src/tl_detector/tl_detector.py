@@ -18,13 +18,27 @@ USE_CLASSIFIER = True
 class TLDetector(object):
     def __init__(self):
         rospy.init_node('tl_detector')
+
+        # try this first as otherwise other elements don't initialise before call backs
+        config_string = rospy.get_param("/traffic_light_config")
+        self.config = yaml.load(config_string)
+        self.is_site = self.config["is_site"]
+        rospy.loginfo("Is Site {0}".format(self.is_site))
+        
+        # test for site
+        if self.is_site:
+            self.model = (rospy.get_param('bbooth_model_path'))
+        else:
+            self.model = (rospy.get_param('bbooth_model_path'))
+        
+        self.light_classifier = TLClassifier(self.model)
         
         self.waypoints_2d = None
         self.pose = None
         self.waypoints = None
         self.camera_image = None
         self.lights = []
-        self.model = (rospy.get_param('bbooth_model_path'))
+        
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
@@ -35,12 +49,10 @@ class TLDetector(object):
         simulator. When testing on the vehicle, the color state will not be available. You'll need to
         rely on the position of the light and the camera image to predict it.
         '''
+       
         sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
-
-        config_string = rospy.get_param("/traffic_light_config")
-        self.config = yaml.load(config_string)
-
+        
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
@@ -54,8 +66,7 @@ class TLDetector(object):
        
         self.waypoint_tree = None
         
-        # put this last as otherwise other elements don't initialise before call backs
-        self.light_classifier = TLClassifier(self.model)
+        
         
         #rospy.spin()
         self.loop()
