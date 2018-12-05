@@ -15,6 +15,8 @@ source activate tf13
 git checkout master
 git checkout f87a58cd
 
+export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+
 python object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path ./config/yourconfig.config --trained_checkpoint_prefix ./ckpt_dir/model.ckpt-<iternum> --output_directory output_dir
 
 # In the above command, replace the config,  chkpt_dir, iternum and output_dir

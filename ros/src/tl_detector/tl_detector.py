@@ -27,7 +27,7 @@ class TLDetector(object):
         
         # test for site
         if self.is_site:
-            self.model = (rospy.get_param('bbooth_model_path'))
+            self.model = (rospy.get_param('bbooth_model_site'))
         else:
             self.model = (rospy.get_param('bbooth_model_path'))
         
